@@ -24,10 +24,10 @@ We need a simple and hassle free for a user to get access to a resource for whic
 * Client Persistence (attacker will not be using a browser)
 * User Scope (server side persistance), an attacker may user different user account. 
 
-### 
-This leads us to a conclusion that at least two factors must be present, Id and Pincode.
+### Conclusion
+This leads us to a conclusion that at least two factors must be present, Id and Pincode. The 'id' could be considered as a rate limiting scope. So basically, there has to be a factor which can somehow be tracked and counted. In case of password username is the first factor, and in a case of a matching point, there MUST a notion of a ratelimiting, otherwise the mechanism is brute-forcable.  
 
-## 4. Implementing the the rate limiting factor
+## Implementing the the rate limiting factor
 There must be a an attempts counter, the time of the last attempt. Maintain a list of pincodes:
 • Track the counts of the number of attempts for each active pin code.
 • Track the time that pincode first appeared
@@ -35,8 +35,6 @@ There must be a an attempts counter, the time of the last attempt. Maintain a li
 • Clean up
 
 Architecturally this can be implemented in a modern environment one of two ways:
-
-
 * Micro service
 The issue with this approach is you are allowing potentially malicious traffic to get past you ingress controller. Secondary, is implementation of a service like high availability can be challenging, eventual consistency, etc.
 Is there a better alternative? We will review what a more secure implementation would look like as well as what we believe to be a novel alternative. The proposed alternative uses a proof-of-work primitive to assess a variable computational cost for a client to make a request which represents an insignificant delay from a user perspective, but makes a brute force attack against these sensitive endpoints computationally infeasible.
