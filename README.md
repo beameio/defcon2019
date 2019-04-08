@@ -24,10 +24,10 @@ PoW -- Proof of work, A proof of work is a piece of data which is difficult (cos
 # Outline 
 
 ## Background
-We work on healthcare applications, and have come across this issue before. What is the right level of security to grant potentially an not authenticated user access to some medical information. This is a very difficult issue, as there are many ways on how the information needs to be distributed, and yes, they are still printing CDs.
+We work on healthcare applications, and have come across this issue before. What is the right level of security to grant potentially a not authenticated user access to some medical information. This is a very difficult issue, as there are many ways on how the information needs to be distributed, and yes, they are still printing CDs.
 
 ## Why did we became interested?
-We have the same issues in our own product. So a group of researches from Berlin preformed colonoscopy on Vivy, and among many other problems, we focused on this brute-forcing of a document ID attack. The claim is that, for a 5 digit code, 10^5 (100k) permutations is susceptible to brute force. Would making this alphanumeric turn it secure? Would 26^6, or 36^6 or 62^6 make it substantially more secure?
+We have the same issues in our own product. So, a group of researchers from Berlin preformed colonoscopy on Vivy, and among many other problems, we focused on this brute-forcing of a document ID attack. The claim is that, for a 5 digit code, 10^5 (100k) permutations is susceptible to brute force. Would making this alphanumeric turn it secure? Would 26^6, or 36^6 or 62^6 make it substantially more secure?
 
 ## Chainsaw Math 
 The range of possible options ranges from 10,000 (for five digits only) and 56,800,235,584 (for five characters consisting of lower+uppercase+digits). For the 5 digits only case, assuming uniform distribution, and 10,000 active codes in the biggest space, with a 10K per second guess attempt rate, it would take 284 seconds on average to discover an active code. Off course to execute this attack one would have to be able to execute 10K attempts per second. So this methodology, of a single knowledge factor (token), has to rely on a token significantly larger then 6 characters to make it computationally infeasible.
@@ -59,16 +59,16 @@ As a feature of an ingress gateway, or as an application service. For example, t
 
 ## Our proposal 
 ### Core Idea 
-We are looking to create a slow down for the client. What if we requested a client to preform an expansive calculation, the result could be easily validated by the server. This would essentially limit the scope of the implementation to just two places as opposed to other options, which are a lot more technically complex. We believe this feature also provides guarantees, that would allow to rely on this single factor, which would provide for simpler user experience. 
+We are looking to create a slow down for the client. What if we requested a client to perform an expansive calculation, the result could be easily validated by the server. This would essentially limit the scope of the implementation to just two places as opposed to other options, which are a lot more technically complex. We believe this feature also provides guarantees, that would allow to rely on this single factor, which would provide for simpler user experience. 
 
 ### Hash Difficulty 
 Difficulty is a measure of how difficult it is to find a hash below a given target.
 
 ### Technical Proposition 
-The server or API gateway would preform the validation of the hash in the inbout HTTP request.  Responding to the matching request would expect to receive a valid proof of work over certain header fields. [query string and body] As such it would be very efficient (cheap) for the server-side to check and expensive for the client to compute. The server algorithm could be adapted to request increasingly complex hashing requirements based on risk factors associated with each particular request. The logic for determining this can be completely arbitrary. The integration of such feature is simple, in nodejs it can be implemented as server middleware. 
+The server or API gateway would perform the validation of the hash in the inbound HTTP request. Responding to the matching request would expect to receive a valid proof of work over certain header fields. [query string and body] As such it would be very efficient (cheap) for the server-side to check and expensive for the client to compute. The server algorithm could be adapted to request increasingly complex hashing requirements based on risk factors associated with each particular request. The logic for determining this can be completely arbitrary. The integration of such feature is simple, in nodejs it can be implemented as server middleware. 
 
 ### Implementation Details
-The client would compute the nonce using the query string, content-type header, and body when avalibale. The datastructure of the value shall be as follows [$queryString,  content-type: $value, body: $body], then the nonce would be recorded in "x-pow-nonce": $value 
+The client would compute the nonce using the query string, content-type header, and body when available. The datastructure of the value shall be as follows [$queryString,  content-type: $value, body: $body], then the nonce would be recorded in "x-pow-nonce": $value 
 
 ### Sample Implementation 
 To find a nonce to a hash the following function can be used:
