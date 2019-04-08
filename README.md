@@ -41,3 +41,4 @@ Is there a better alternative? We will review what a more secure implementation 
 
 * Ingress Gateway Feature
 As a feature of an ingress gateway, or as an application service. For example, this would be possible to implement as an authorizer function in AWS API gateway. Although is it possible to implement it as feature of an ingress gateway, it would require coupling the workload with the ingress gateway which implements critical security logic.
+
