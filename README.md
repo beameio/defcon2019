@@ -65,7 +65,44 @@ We are looking to create a slow down for the client. What if we requested a clie
 Difficulty is a measure of how difficult it is to find a hash below a given target.
 
 ### Technical Proposition 
-An API gateway responding to the matching request would expect to receive a valid proof of work over certain header fields. [query string and body] As such it would be very efficient(cheep)  for the server-side to check and expensive for the client to compute. The server algorithm could be adapted to request increasingly complex hashing requirements based on risk factors associated with each particular request. The logic for determining this can be completely arbitrary. 
+The server or API gateway would preform the validation of the hash in the inbout HTTP request.  Responding to the matching request would expect to receive a valid proof of work over certain header fields. [query string and body] As such it would be very efficient(cheep)  for the server-side to check and expensive for the client to compute. The server algorithm could be adapted to request increasingly complex hashing requirements based on risk factors associated with each particular request. The logic for determining this can be completely arbitrary.   The integration of such feature is simple, in nodejs it can be implemented as server middleware. 
+
+### Implementation Details
+The client would compute the nonce using the query string, content-type header, and body when avalibale. The datastructure of the value shall be as follows [$queryString,  content-type: $value, body: $body], then the nonce would be recorded in "x-pow-nonce": $value 
+
+### Sample Implementation 
+To find a nonce to a hash the following function can be used:
+```
+/**
+ * Simple proof of work: concatenate the input string with a nonce, returning
+ * the nonce when the last 3 digits of the hex-encoded SHA256 hash are '000'.
+ * This version calculates the nonce by incrementing a number and converting it
+ * to a hex string.
+ *
+ * @param  String input The starting string.
+ * @return String       The computed nonce.
+ */
+function work(input, difficulty) {
+  var id = 0;
+  while (true) {
+    var nonce = id.toString(16);
+
+    var sha256 = createHash('sha256');
+    sha256.update(input);
+    sha256.update(nonce);
+
+    if (sha256.digest('hex').slice(-1 * difficulty ) === '0'.repeat(difficulty) return nonce;
+    else id++;
+  }
+}
+```
+
+
+# Key Takeaways
+* When implementing a use-case that relys on short-id such as a PIN code to grant access to a resource, significant attention has to be given to how can a brute-force be performed/prevented.
+* Implementing rate limiting is hard and best left to professionals. (Envoy, Ngnix, API Gws, etc. )
+* The addition of requirement of a proof of work can add a nice layer of protection of access to critical APIs resources.
+
 
 
 
