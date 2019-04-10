@@ -1,3 +1,4 @@
+DRAFT
 
 # Abstract
 In recent years, out-of-band PIN codes usage for matching/pairing/authentication gained popularity. Those codes are used for a variety of use-cases from claiming ownership of an IoT device to document sharing. The codes are usually four to six characters, numeric or alphanumeric. 
@@ -7,9 +8,7 @@ We will demonstrate that a single knowledge factor (PIN code) cannot be secure w
 # Introduction 
 We examine some vulnerabilities for existing out-of-band PIN codes for a variety of authentication and authorization use cases. We propose a novel, simple to implement, stateless alternative that uses a variable cost proof-of-work primitive to limit the rate of brute force attacks.
 
-
-# Terms and Concepts 
-## Why DEFCON
+# Why DEFCON?
 * Understanding these mechanisms is critical from attackers and defenders point of view.
 * The idea presented leverages some concepts from blockchain in an innovative way.
 * The idea is intellectually stimulating and can lead to other developments using cryptographic primitives in new ways.
@@ -25,11 +24,12 @@ PoW -- Proof of work, A proof of work is a piece of data which is difficult (cos
 # Outline 
 
 ## Background
-We work on healthcare applications and have come across this issue before: What is the right level of security to grant access to some medical information, potentially to a not authenticated user. This is a very difficult issue, as there are many ways on how the information needs to be distributed, and yes, they are still printing CDs.
+We work on healthcare applications and have come across this issue before: How secure should a mechanism be for granting access to medical information to an otherwise unauthenticated user be? This becomes a hard question, as there are many ways on how the information needs to be distributed, and yes, they are still printing CDs.
 
 ## Why did we became interested?
-We have the same issues in our own products.
-A group of researchers from Berlin preformed colonoscopy on Vivy, and among many other problems, we focused on this brute-forcing of a document ID attack. The claim is that a 5 digit code, 10^5 (100k) permutations, is susceptible to brute force. Would making it alphanumeric turn it secure? Would 26^6, or 36^6 or 62^6 make it substantially more secure?
+A group of researchers from Berlin preformed colonoscopy on Vivy and found many problems. 
+We decided to focus on the "brute-forcing of an endpoint with document ID and PIN" since our own products also employ PIN codes.
+The claim is that a 5 digit code, 10^5 (100k) permutations, is susceptible to brute force. Would alphanumeric make it secure? Would 26^6, or 36^6 or 62^6 make it substantially more secure?
 
 ## Chainsaw Math 
 The range of possible options ranges from 10,000 (for five digits only) and 56,800,235,584 (for five characters consisting of lower+uppercase+digits). For the 5 digits only case, assuming uniform distribution, and 10,000 active codes in the biggest space, with a 10K per second guess attempt rate, it would take 284 seconds on average to discover an active code. Off course to execute this attack one would have to be able to execute 10K attempts per second. So this methodology, of a single knowledge factor (token), has to rely on a token significantly larger then 6 characters to make it computationally infeasible.
@@ -104,7 +104,3 @@ function work(input, difficulty) {
 * When implementing a use-case that relies on short-id such as a PIN code to grant access to a resource, significant attention has to be given to how a brute-force can be performed/prevented.
 * Implementing rate limiting is hard and best left to professionals. (Envoy, Ngnix, API Gws, etc. )
 * The addition of requirement of a proof of work can add a nice layer of protection of access to critical APIs resources.
-
-
-
-
