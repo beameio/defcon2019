@@ -93,7 +93,7 @@ function work(input, difficulty) {
     sha256.update(input);
     sha256.update(nonce);
 
-    if (sha256.digest('hex').slice(-1 * difficulty ) === '0'.repeat(difficulty) return nonce;
+    if (sha256.digest('hex').slice(-1 * difficulty ) === '0'.repeat(difficulty)) return nonce;
     else id++;
   }
 }
