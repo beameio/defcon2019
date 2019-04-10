@@ -84,16 +84,17 @@ To find a nonce to a hash the following function can be used:
  * @param  String input The starting string.
  * @return String       The computed nonce.
  */
+const crypto = require('crypto');
 function work(input, difficulty) {
   var id = 0;
   while (true) {
     var nonce = id.toString(16);
 
-    var sha256 = createHash('sha256');
+    var sha256 = crypto.createHash('sha256');
     sha256.update(input);
     sha256.update(nonce);
 
-    if (sha256.digest('hex').slice(-1 * difficulty ) === '0'.repeat(difficulty) return nonce;
+    if (sha256.digest('hex').slice(-1 * difficulty ) === '0'.repeat(difficulty)) return nonce;
     else id++;
   }
 }
