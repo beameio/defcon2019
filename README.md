@@ -1,7 +1,8 @@
 
 # Abstract
 In recent years, out-of-band PIN codes usage for matching/pairing/authentication gained popularity. Those codes are used for a variety of use-cases from claiming ownership of an IoT device to document sharing. The codes are usually four to six characters, numeric or alphanumeric. 
-A problem with this approach was recently reported as a security problem in a mobile health care application called Vivy which is used by a group of a healthcare insurance carriers in Germany, claiming that the design was fundamentally insecure. Are all 4-6 digit PIN codes insecure ? What if alphanumeric is used? We will demonstrate that a single knowledge factor (PIN code) cannot be secured, without a stack of additional layers. We further examine alternatives of implementation of a secure method, identify key challenges, and propose a novel, simple to implement solution for rate limiting of these hypersensitive API endpoints.
+A security problem with this approach was recently reported in a mobile health care application called Vivy which is used by a group of a healthcare insurance carriers in Germany, claiming that the design was fundamentally insecure. Are all 4-6 digit PIN codes insecure? What if alphanumeric is used? 
+We will demonstrate that a single knowledge factor (PIN code) cannot be secure without a stack of additional layers. We further examine alternatives of implementation, identify key challenges, and propose a novel, simple to implement solution for rate limiting of these hypersensitive API endpoints.
 
 # Introduction 
 We examine some vulnerabilities for existing out-of-band PIN codes for a variety of authentication and authorization use cases. We propose a novel, simple to implement, stateless alternative that uses a variable cost proof-of-work primitive to limit the rate of brute force attacks.
@@ -24,10 +25,11 @@ PoW -- Proof of work, A proof of work is a piece of data which is difficult (cos
 # Outline 
 
 ## Background
-We work on healthcare applications, and have come across this issue before. What is the right level of security to grant potentially a not authenticated user access to some medical information. This is a very difficult issue, as there are many ways on how the information needs to be distributed, and yes, they are still printing CDs.
+We work on healthcare applications and have come across this issue before: What is the right level of security to grant access to some medical information, potentially to a not authenticated user. This is a very difficult issue, as there are many ways on how the information needs to be distributed, and yes, they are still printing CDs.
 
 ## Why did we became interested?
-We have the same issues in our own product. So, a group of researchers from Berlin preformed colonoscopy on Vivy, and among many other problems, we focused on this brute-forcing of a document ID attack. The claim is that, for a 5 digit code, 10^5 (100k) permutations is susceptible to brute force. Would making this alphanumeric turn it secure? Would 26^6, or 36^6 or 62^6 make it substantially more secure?
+We have the same issues in our own products.
+A group of researchers from Berlin preformed colonoscopy on Vivy, and among many other problems, we focused on this brute-forcing of a document ID attack. The claim is that a 5 digit code, 10^5 (100k) permutations, is susceptible to brute force. Would making it alphanumeric turn it secure? Would 26^6, or 36^6 or 62^6 make it substantially more secure?
 
 ## Chainsaw Math 
 The range of possible options ranges from 10,000 (for five digits only) and 56,800,235,584 (for five characters consisting of lower+uppercase+digits). For the 5 digits only case, assuming uniform distribution, and 10,000 active codes in the biggest space, with a 10K per second guess attempt rate, it would take 284 seconds on average to discover an active code. Off course to execute this attack one would have to be able to execute 10K attempts per second. So this methodology, of a single knowledge factor (token), has to rely on a token significantly larger then 6 characters to make it computationally infeasible.
