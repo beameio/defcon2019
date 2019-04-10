@@ -1,0 +1,74 @@
+<html>
+<script>
+	const crypto = window.crypto;
+
+	async function sha256(message) {
+		// encode as UTF-8
+		const msgBuffer = new TextEncoder('utf-8').encode(message);
+
+		// hash the message
+		const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+
+		// convert ArrayBuffer to Array
+		const hashArray = Array.from(new Uint8Array(hashBuffer));
+
+		// convert bytes to hex string
+		const hashHex = hashArray.map(b => ('00' + b.toString(16)).slice(-2)).join('');
+		return hashHex;
+	}
+
+	async function work(data, difficulty = 4) {
+		let id = 0;
+		while (true) {
+			const nonce = id.toString(16);
+			const hash = (await sha256(data + nonce)).toString();
+
+			if(hash.slice(-1 * difficulty ) === '0'.repeat(difficulty)) {
+				document.getElementById('count').innerHTML = id;
+				return nonce;
+			}
+			else id++;
+		}
+	}
+
+	function callApi() {
+		var docId = document.getElementById("docId").value;
+		work(docId)
+			.then((nounce) => {
+				document.getElementById('nounce').innerHTML = nounce;
+				var request = new XMLHttpRequest();
+				request.open('GET', 'http://localhost:3000/?pow='+nounce+'&docId='+docId, true);
+				request.onload = function () {
+					document.getElementById('result').innerHTML = this.response;
+				};
+				request.send();
+			});
+	}
+
+</script>
+
+<head>API with PoW example</head>
+<body>
+<br/><br/>
+<div>
+	<label for="docId">Insert value to send:</label>
+	<input id="docId" type="text" name="text">
+	<button onclick="callApi()">Send to API</button>
+</div>
+<br/><br/>
+<div>
+	<label for="nounce">Nounce:</label>
+	<label id="nounce"></label>
+</div>
+<div>
+	<label for="count">Iterations:</label>
+	<label id="count"></label>
+</div>
+<br/>
+<div>
+	<label for="result">Result:</label>
+	<label id="result"></label>
+</div>
+
+</body>
+</html>
