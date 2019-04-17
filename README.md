@@ -27,7 +27,7 @@ PoW -- Proof of work, A proof of work is a piece of data which is difficult (cos
 We work on healthcare applications and have come across this issue before: How secure should a mechanism be for granting access to medical information to an otherwise unauthenticated user be? This becomes a hard question, as there are many ways on how the information needs to be distributed, and yes, they are still printing CDs.
 
 ## Why did we became interested?
-A group of researchers from Berlin preformed colonoscopy on Vivy and found many problems. 
+A group of researchers from Berlin performed colonoscopy on Vivy and found many problems. 
 We decided to focus on the "brute-forcing of an endpoint with document ID and PIN" since our own products also employ PIN codes.
 The claim is that a 5 digit code, 10^5 (100k) permutations, is susceptible to brute force. Would alphanumeric make it secure? Would 26^6, or 36^6 or 62^6 make it substantially more secure?
 
