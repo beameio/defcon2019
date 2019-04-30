@@ -28,17 +28,16 @@ function work(input, difficulty = 4) {
     }
 }
 
-
 /**
  * @param  String input         The starting string.
- * @param  int pow              PoW sent by the client
+ * @param  int nonce            nonce to validate
  * @param  int difficulty
- * @return bool                 Is the pow valid
+ * @return bool                 true if valid, false otherwise
  */
-function validateWork(input, pow, difficulty = 4) {
+function validateWork(input, nonce, difficulty = 4) {
     const sha256 = crypto.createHash('sha256');
     sha256.update(input);
-    sha256.update(pow);
+    sha256.update(nonce);
     return sha256.digest('hex').endsWith('0'.repeat(difficulty));
 }
 
@@ -47,12 +46,14 @@ http.createServer((req, res) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET');
 
     const query = url.parse(req.url,true).query;
-    const pow = query.pow;
+    const nonce = query.nonce;
     const doc = query.docId;
-    if(!pow) res.end("PoW not present");
+    if(!nonce) res.end("nonce not present");
     if(!doc) res.end("docId not present");
 
-    if(doc && validateWork(doc, pow)) res.end("matches :)");
-    res.end("PoW sent doesn't match");
+    console.log(`Received: nonce=${nonce} docId=${doc}`);
+    if(doc && validateWork(doc, nonce)) res.end("matches :)");
+
+    res.end("failed :(");
 
 }).listen(3000, '0.0.0.0', function() {console.log('Listening to port:  ' + 3000);});

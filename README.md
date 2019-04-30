@@ -88,15 +88,15 @@ To find a nonce to a hash the following function can be used:
 ```
 /**
  * @param  String input         The starting string.
- * @param  int pow              PoW sent by the client
+ * @param  int nonce            nonce to validate
  * @param  int difficulty
- * @return bool                 Is the pow valid
+ * @return bool                 true if valid, false otherwise
  */
-function validateWork(input, pow, difficulty = 4) {
+function validateWork(input, nonce, difficulty = 4) {
     const sha256 = crypto.createHash('sha256');
     sha256.update(input);
-    sha256.update(pow);
-    return (sha256.digest('hex').slice(-1 * difficulty ) === '0'.repeat(difficulty));
+    sha256.update(nonce);
+    return sha256.digest('hex').endsWith('0'.repeat(difficulty));
 }
 ```
 

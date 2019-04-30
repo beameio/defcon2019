@@ -30,6 +30,11 @@
 			else id++;
 		}
 	}
+	function clean() {
+		document.getElementById('result').innerHTML=""
+		document.getElementById('count').innerHTML=""
+		document.getElementById('nounce').innerHTML=""
+	}
 
 	function callApi() {
 		var docId = document.getElementById("docId").value;
@@ -37,7 +42,7 @@
 			.then((nounce) => {
 				document.getElementById('nounce').innerHTML = nounce;
 				var request = new XMLHttpRequest();
-				request.open('GET', 'http://localhost:3000/?pow='+nounce+'&docId='+docId, true);
+				request.open('GET', 'http://localhost:3000/?nonce='+nounce+'&docId='+docId, true);
 				request.onload = function () {
 					document.getElementById('result').innerHTML = this.response;
 				};
@@ -52,7 +57,7 @@
 <br/><br/>
 <div>
 	<label for="docId">Insert value to send:</label>
-	<input id="docId" type="text" name="text">
+	<input oninput="clean()" id="docId" type="text" name="text">
 	<button onclick="callApi()">Send to API</button>
 </div>
 <br/><br/>
