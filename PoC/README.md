@@ -1,12 +1,12 @@
 ## Start localhost server
-node main.js
+`node main.js`
 
 
 
 
 ## Client
 
-Open index.html in a browser
+Open `index.html` in a browser
 
 
 or call the api directly:
