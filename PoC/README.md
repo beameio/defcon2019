@@ -3,8 +3,10 @@ node main.js
 
 
 ## Client
-open index.html
 
-or
+open index.html in a browser
 
-curl "http://localhost:3000/?pow=48012&docId=dddd"
+
+or alternatively call the api directly:
+(valid example) - curl "http://localhost:3000/?pow=48012&docId=dddd"
+(invalid example) - curl "http://localhost:3000/?pow=48012&docId=dddda"
