@@ -2,13 +2,15 @@
 node main.js
 
 
+
+
 ## Client
 
-open index.html in a browser
+Open index.html in a browser
 
 
-or alternatively call the api directly:
+or call the api directly:
 
-  (valid example) - curl "http://localhost:3000/?pow=48012&docId=dddd"
+ - (valid example) - curl "http://localhost:3000/?pow=48012&docId=dddd"
   
-  (invalid example) - curl "http://localhost:3000/?pow=48012&docId=dddda"
+ - (invalid example) - curl "http://localhost:3000/?pow=48012&docId=dddda"
