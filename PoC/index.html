@@ -23,7 +23,7 @@
 			const nonce = id.toString(16);
 			const hash = (await sha256(data + nonce)).toString();
 
-			if(hash.slice(-1 * difficulty ) === '0'.repeat(difficulty)) {
+			if(hash.endsWith('0'.repeat(difficulty))) {
 				document.getElementById('count').innerHTML = id;
 				return nonce;
 			}

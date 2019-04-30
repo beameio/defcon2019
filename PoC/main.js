@@ -20,7 +20,7 @@ function work(input, difficulty = 4) {
         sha256.update(input);
         sha256.update(nonce);
 
-        if (sha256.digest('hex').slice(-1 * difficulty ) === '0'.repeat(difficulty)) {
+        if (sha256.digest('hex').endsWith('0'.repeat(difficulty))) {
             console.log(`Nonce ${nonce} found after ${id} times`);
             return nonce;
         }
@@ -39,7 +39,7 @@ function validateWork(input, pow, difficulty = 4) {
     const sha256 = crypto.createHash('sha256');
     sha256.update(input);
     sha256.update(pow);
-    return (sha256.digest('hex').slice(-1 * difficulty ) === '0'.repeat(difficulty));
+    return sha256.digest('hex').endsWith('0'.repeat(difficulty));
 }
 
 http.createServer((req, res) => {
@@ -52,7 +52,7 @@ http.createServer((req, res) => {
     if(!pow) res.end("PoW not present");
     if(!doc) res.end("docId not present");
 
-    if(doc && validateWork(doc, pow)) res.end("matches, yeahh!!!");
+    if(doc && validateWork(doc, pow)) res.end("matches :)");
     res.end("PoW sent doesn't match");
 
 }).listen(3000, '0.0.0.0', function() {console.log('Listening to port:  ' + 3000);});
