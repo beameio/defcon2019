@@ -1,11 +1,102 @@
 DRAFT
 
-# Abstract
-In recent years, out-of-band PIN codes usage for matching/pairing/authentication gained popularity. Those codes are used for a variety of use cases from claiming ownership of an IoT device to document sharing. The codes are usually four to six characters, numeric or alphanumeric. 
-A security problem with this approach was recently reported in a mobile health care application named [Vivy](https://www.vivy.com/), which is used by a group of a healthcare insurance carriers in Germany, claiming that the design was fundamentally insecure.
+PRESENTER INFORMATION
+Primary Speaker Name or Pseudonym*:
+Zeev Glozman 
 
-Are all 4-6 digit PIN codes insecure? What if alphanumeric is used? 
+Primary Speaker Title and Company (if applicable):
+API Architect beame.io
+
+Additional Speaker Name(s)/Pseudonym(s)* and Title(s):
+Ricardo Gomez, Ilya Sher 
+
+Have any of the speakers spoken at a previous DEF CON? If Yes, which speaker, what year(s), and which talk(s)?
+Yes, DEFCON24 I presented an open source ssl audit tool
+
+Primary Speaker Email Address:
+zglozman@gmail.com
+
+Backup Email, in case of communication failure (optional):
+z@beame.io
+
+Primary Speaker Phone Number:
+3123912730 
+
+Co-Speaker(s) Email Address(es):
+rg@beame.io
+
+Co-Speaker(s) Phone Number(s):
+3123912730
+Speakers' Social Media / Personal Site Information (Twitter, Facebook, website, etc)*:
+@zglozman
+
+Would you like your submission sent in anonymously to the review board?*: Yes or No
+No
+
+PRESENTATION INFORMATION
+Date of Submission:
+April 30, 2019 
+
+Presentation Title:
+Can proof of work be useful for API Security ? 
+
+Length of presentation: (20 minutes, 45 minutes, 105 minutes)
+20
+
+Is there a demonstration? Yes or No. If yes, please explain the demonstration.
+Yes, we will demonstrate a simulated attack, with an without proof of work, and show the level of utilization of the server. 
+
+Is there audience participation*? Yes or No. If yes, how?
+No 
+
+Are you releasing a new tool? Yes or No
+Yes, the client libraries and supporting backend code will be made avaliable for nodejs and evoy and AWS 
+
+If you are releasing a new tool:
+Under which license? 
+MIT
+
+Is it a full tool suite, a plugin, proof of concept exploit, update to existing tool, or something else? 
+Is the tool currently public? 
+What language is the tool written in? 
+Please introduce your tool briefly and explain what it does:
+We will provide a client library, as well as a range of possible backend implementations for this usecase.
+
+Are you releasing a new exploit? Yes or No: NO
+If you are releasing vulnerabilities, please break them down and abstract as a vulnerability database would. Include the vendor(s), product(s), and version(s) affected here:
+NO 
+
+Are there any contingencies that might prevent releasing the exploit (e.g. vendor relationships, coordinated disclosure delays, visa approvals, etc)? Yes or No
+No 
+
+Have you submitted or do you plan on submitting this topic to any other conference held prior to DEF CON 27? If yes, please list which conference(s) and their dates.
+No
+
+Are you submitting this or any other topic to Black Hat USA? Yes or No. If Yes, please elaborate.
+No 
+
+If you answered yes to the previous question, can you ONLY commit to speak at DEF CON if your talk is accepted at Black Hat USA? Yes or No 
+Only defcon 
+
+Note: For clarification, this means if your submission to Black Hat's CFP is rejected, you will withdraw your DEF CON Submission.
+No 
+
+Are you submitting this or any other topic to BSidesLV? Yes or No. If Yes, please elaborate.
+No 
+
+If your DEF CON submission is not accepted for our main tracks, do you consent to allow DEF CON to forward your completed submission to the relevant official DEF CON Villages for their consideration for village content?* Yes or No.
+Yes
+
+ABSTRACT (not to exceed 1337 characters):
+# Abstract
+In recent years, out-of-band PIN codes usage for matching/pairing/authentication gained popularity. Those codes are used for a variety of use cases from claiming ownership of an IoT device to document sharing. The codes are usually four to six characters, numeric or alphanumeric. A security problem with this approach was recently reported in a mobile health care application, which is used by a group of a healthcare insurance carriers in Germany, claiming that the design was fundamentally insecure. Are all 4-6 digit PIN codes insecure? What if alphanumeric is used? 
 We will demonstrate that a single knowledge factor (PIN code) cannot be secure without additional layers of protection. We further examine alternatives of implementation, identify key challenges, and propose a novel, simple to implement solution for rate limiting of these hypersensitive API endpoints.
+
+
+Speaker Bio(s) (not to exceed 1337 characters total):
+I am pationate about technology, i like to reuse engineering concepts from one problem to another. I belive that revolution in healthcare apps is about to come, and as such this is the time to think about and address securirty of this medical usecases. 
+
+DETAILED OUTLINE:
 
 # Introduction 
 We examine some vulnerabilities for existing out-of-band PIN codes for a variety of authentication and authorization use cases. We propose a novel, simple to implement, stateless alternative that uses a variable cost proof-of-work primitive to limit the rate of brute force attacks.
@@ -13,6 +104,7 @@ We examine some vulnerabilities for existing out-of-band PIN codes for a variety
 # Why DEFCON?
 * Understanding these mechanisms is critical from attackers and defenders point of view.
 * The idea presented leverages some concepts from blockchain in an innovative way.
+* We will provide a frame of reference how one can assess a security of a matching API, and brute force suseptibility. 
 * The idea is intellectually stimulating and can lead to other developments using cryptographic primitives in new ways.
 * To the knowledge of the authors, similar ideas have been used by CTF organizers to prevent brute forcing of challenges submitted, but such methods have received no attention in a greater context of general applicability to the defense of APIs.
 
@@ -104,3 +196,4 @@ function validateWork(input, nonce, difficulty = 4) {
 * When implementing a use case that relies on short id such as a PIN code to grant access to a resource, significant attention has to be given to mitigating a brute-force attack.
 * Implementing rate limiting is hard and best left to professionals. (Envoy, Ngnix, API Gateways, etc. )
 * The addition of requirement of a proof of work can add a nice layer of protection of access to critical APIs resources.
+* This mechanisems are dangeours and hard to implement. 
