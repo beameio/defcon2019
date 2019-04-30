@@ -7,9 +7,8 @@ const crypto = require('crypto');
  * the nonce when the last 3 digits of the hex-encoded SHA256 hash are '000'.
  * This version calculates the nonce by incrementing a number and converting it
  * to a hex string.
- *
  * @param  String input         The starting string.
- * @param  String difficulty    The starting string.
+ * @param  int difficulty
  * @return String               The computed nonce.
  */
 function work(input, difficulty = 4) {
@@ -29,6 +28,20 @@ function work(input, difficulty = 4) {
     }
 }
 
+
+/**
+ * @param  String input         The starting string.
+ * @param  int pow              PoW sent by the client
+ * @param  int difficulty
+ * @return bool                 Is the pow valid
+ */
+function validateWork(input, pow, difficulty = 4) {
+    const sha256 = crypto.createHash('sha256');
+    sha256.update(input);
+    sha256.update(pow);
+    return (sha256.digest('hex').slice(-1 * difficulty ) === '0'.repeat(difficulty));
+}
+
 http.createServer((req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET');
@@ -39,8 +52,7 @@ http.createServer((req, res) => {
     if(!pow) res.end("PoW not present");
     if(!doc) res.end("docId not present");
 
-    let wrk = doc && work(doc);
-    if(wrk !== pow) res.end("PoW sent doesn't match");
+    if(doc && validateWork(doc, pow)) res.end("matches, yeahh!!!");
+    res.end("PoW sent doesn't match");
 
-    res.end("Data reached, yeahh!!!");
 }).listen(3000, '0.0.0.0', function() {console.log('Listening to port:  ' + 3000);});
